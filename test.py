@@ -5,7 +5,7 @@ Created 13/04/2021
 """
 
 import sys
-import Enigma
+import enigma
 
 
 def test(did_pass):
@@ -20,9 +20,9 @@ def test(did_pass):
 # Acciones:
 # 0:Cifrar
 # 1:Descifrar
-msg1 = Enigma.Maquina("hola mundo", 123)
-msg2 = Enigma.Maquina("enigma code", 343)
-msg3 = Enigma.Maquina("cifrando ando", 456)
+msg1 = enigma.Maquina("hola mundo", 123)
+msg2 = enigma.Maquina("enigma code", 343)
+msg3 = enigma.Maquina("cifrando ando", 456)
 
 test(msg1.cifrar_decifrar(0) == "_kaidznuuj")
 test(msg1.cifrar_decifrar(1) == "hola mundo")
