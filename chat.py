@@ -124,6 +124,8 @@ class Chat:
         self.popup = Tk()
         self.popup.wm_title("Unlock Chat")
         self.popup.configure(bg='#535d61')
+
+        self.unlock_icon = PhotoImage(file=('resource/unlock.png'))
         
         self.lb_key_popup = Label(self.popup, font=('Courier', 12, 'bold'), bg='#535d61', fg='#4fff7b', text='Key Code: ')
         self.lb_key_popup.place(x=50, y=10)
@@ -131,8 +133,16 @@ class Chat:
         self.key_code_popup = Entry(self.popup, font=('Courier', 12), bg='black', fg='white')
         self.key_code_popup.place(x=55, y=40, width=80,height=35)
 
-        self.sign_btn_popup = Button(self.popup, borderwidth=1, highlightthickness=1, text='unlock', bg='#535d61', command=self.check_unlock_chat)
-        self.sign_btn_popup.place(x=60, y=100)
+        self.unlock_btn_popup = Button(
+            self.popup,
+            image=self.unlock_icon, 
+            font=('Courier', 12, 'bold'), bg='#535d61', 
+            fg='#8adaff', borderwidth=1, 
+            highlightthickness=1,
+            text='Unlock', 
+            command=self.check_unlock_chat
+            )
+        self.unlock_btn_popup.place(x=45, y=100)
         self.popup.mainloop()
     
     def check_unlock_chat(self):
