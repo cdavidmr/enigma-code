@@ -26,7 +26,8 @@ class Chat:
 
         self.key = key
         self.nick_name = nick
-        self.timer_diff = timer
+        # self.timer_diff = timer
+        self.timer_diff = 2
 
         self.current_timer = time.time()
         self.timer_check = 2000
@@ -67,7 +68,7 @@ class Chat:
             self.reset_timer()
 
     def unlock_btn_load(self):
-        self.unlock_btn = Button(bg='black', borderwidth=0, highlightthickness=0, command=self.unlock_chat)
+        self.unlock_btn = Button(bg='black', borderwidth=0, highlightthickness=0, command=self.unlock_chat_popup)
         self.unlock_btn.config(image=self.lock_icon)
         self.unlock_btn.place(x=600, y=15, width=50, height=50)
 
@@ -79,15 +80,29 @@ class Chat:
         text_lock = []
         self.chat_display.delete(0, END)
         for msg in text:
-            msg_to_lock = enigma.Maquina(msg, 123)
+            msg_to_lock = enigma.Maquina(msg, self.key)
             text_lock.append(msg_to_lock.cifrar_decifrar(0))
         for msg_lock in text_lock:
             self.chat_display.configure(fg='#ffe8bf')
             self.chat_display.insert(END, msg_lock)
             self.unlock_btn_load()
 
+    def unlock_chat_popup(self):
+        self.load_popup()
+    
     def unlock_chat(self):
-        self.frame_destroy(self.unlock_btn)
+        self.unlock_btn.destroy()
+        text = self.chat_display.get(0, END)
+        text_unlock = []
+        print(text)
+        self.chat_display.delete(0, END)
+        for msg in text:
+            msg_to_unlock = enigma.Maquina(msg, self.key)
+            text_unlock.append(msg_to_unlock.cifrar_decifrar(1))
+        for msg_unlock in text_unlock:
+            self.chat_display.configure(fg='#ffe8bf')
+            self.chat_display.insert(END, msg_unlock)
+            self.unlock_btn_load()
 
     def keydown(self, event):
         self.reset_timer()
@@ -105,6 +120,35 @@ class Chat:
                 self.status = 1
                 self.lock_chat(text_list)
             self.myframe.after(self.timer_check, self.check_inactivity)
+
+    def load_popup(self):
+        self.popup = Tk()
+        self.popup.wm_title("Unlock Chat")
+        self.popup.configure(bg='#535d61')
+        
+        self.lb_key_popup = Label(self.popup, font=('Courier', 12, 'bold'), bg='#535d61', fg='#4fff7b', text='Key Code: ')
+        self.lb_key_popup.place(x=50, y=10)
+
+        self.key_code_popup = Entry(self.popup, font=('Courier', 12), bg='black', fg='white')
+        self.key_code_popup.place(x=55, y=40, width=80,height=35)
+
+        self.sign_btn_popup = Button(self.popup, borderwidth=1, highlightthickness=1, text='unlock', bg='#535d61', command=self.check_unlock_chat)
+        self.sign_btn_popup.place(x=60, y=100)
+        self.popup.mainloop()
+    
+    def check_unlock_chat(self):
+        try:
+            key = int(self.key_code_popup.get())        
+            if key == self.current_key:
+                self.chat.unlock_chat()
+                self.popup.destroy()
+            else:
+                self.lb_error.destroy()        
+                self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='Key Code not match!')
+                self.lb_error.place(x=30, y=150)
+        except ValueError:        
+            self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='Key Code Invalid!')
+            self.lb_error.place(x=30, y=150)
     
 class SignUp():
 
