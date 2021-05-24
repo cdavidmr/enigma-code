@@ -26,8 +26,7 @@ class Chat:
 
         self.key = key
         self.nick_name = nick
-        # self.timer_diff = timer
-        self.timer_diff = 2
+        self.timer_diff = timer
 
         self.current_timer = time.time()
         self.timer_check = 2000
@@ -91,7 +90,6 @@ class Chat:
         self.load_popup()
     
     def unlock_chat(self):
-        self.unlock_btn.destroy()
         text = self.chat_display.get(0, END)
         text_unlock = []
         print(text)
@@ -103,6 +101,7 @@ class Chat:
             self.chat_display.configure(fg='#ffe8bf')
             self.chat_display.insert(END, msg_unlock)
             self.unlock_btn_load()
+        self.check_inactivity()
 
     def keydown(self, event):
         self.reset_timer()
@@ -139,11 +138,11 @@ class Chat:
     def check_unlock_chat(self):
         try:
             key = int(self.key_code_popup.get())        
-            if key == self.current_key:
-                self.chat.unlock_chat()
+            if key == self.key:
+                self.unlock_btn.destroy()
+                self.unlock_chat()
                 self.popup.destroy()
-            else:
-                self.lb_error.destroy()        
+            else:    
                 self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='Key Code not match!')
                 self.lb_error.place(x=30, y=150)
         except ValueError:        
