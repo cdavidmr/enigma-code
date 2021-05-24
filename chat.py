@@ -84,7 +84,7 @@ class Chat:
         for msg_lock in text_lock:
             self.chat_display.configure(fg='#ffe8bf')
             self.chat_display.insert(END, msg_lock)
-            self.unlock_btn_load()
+        self.unlock_btn_load()
 
     def unlock_chat_popup(self):
         self.load_popup()
@@ -92,15 +92,15 @@ class Chat:
     def unlock_chat(self):
         text = self.chat_display.get(0, END)
         text_unlock = []
-        print(text)
+        self.status = 0
         self.chat_display.delete(0, END)
         for msg in text:
             msg_to_unlock = enigma.Maquina(msg, self.key)
             text_unlock.append(msg_to_unlock.cifrar_decifrar(1))
         for msg_unlock in text_unlock:
-            self.chat_display.configure(fg='#ffe8bf')
+            self.chat_display.configure(fg='#95ff87')
             self.chat_display.insert(END, msg_unlock)
-            self.unlock_btn_load()
+        self.reset_timer()
         self.check_inactivity()
 
     def keydown(self, event):
