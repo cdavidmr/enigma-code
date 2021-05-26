@@ -125,8 +125,6 @@ class Chat:
         self.popup.wm_title("Unlock Chat")
         self.popup.configure(bg='#535d61')
 
-        self.unlock_icon = PhotoImage(file=('resource/unlock.png'))
-        
         self.lb_key_popup = Label(self.popup, font=('Courier', 12, 'bold'), bg='#535d61', fg='#4fff7b', text='Key Code: ')
         self.lb_key_popup.place(x=50, y=10)
 
@@ -135,14 +133,14 @@ class Chat:
 
         self.unlock_btn_popup = Button(
             self.popup,
-            image=self.unlock_icon, 
             font=('Courier', 12, 'bold'), bg='#535d61', 
             fg='#8adaff', borderwidth=1, 
             highlightthickness=1,
             text='Unlock', 
             command=self.check_unlock_chat
             )
-        self.unlock_btn_popup.place(x=45, y=100)
+        self.unlock_btn_popup.place(x=55, y=100)
+        self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='')
         self.popup.mainloop()
     
     def check_unlock_chat(self):
@@ -153,10 +151,10 @@ class Chat:
                 self.unlock_chat()
                 self.popup.destroy()
             else:    
-                self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='Key Code not match!')
+                self.lb_error.config(text='Key Code not match!')
                 self.lb_error.place(x=30, y=150)
-        except ValueError:        
-            self.lb_error = Label(self.popup, font=('Courier', 10, 'bold'), bg='#535d61', fg='#fa6666', text='Key Code Invalid!')
+        except ValueError:
+            self.lb_error.config(text='Key Code Invalid!')
             self.lb_error.place(x=30, y=150)
     
 class SignUp():
@@ -164,7 +162,7 @@ class SignUp():
     def __init__(self, master):
         self.myframe = Frame(master)
         self.myframe.pack()
-        
+
         img_enigma = Image.open('resource/enigma_ico.png')
         img_enigma_r = img_enigma.resize((200, 200), Image.ANTIALIAS)
 
